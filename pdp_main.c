@@ -8,7 +8,8 @@ typedef word Adress;
 #define MEM_SIZE (64 * 1024)
 
 byte mem[MEM_SIZE];
-
+void mem_dump(Adress adr, int size);
+void load_data();
 void b_write(Adress adr, byte b);
 byte b_read(Adress adr);
 void w_write(Adress adr, word w);
@@ -41,8 +42,13 @@ void test_w_write()
 }
 int main()
 {
+    load_data();
+
+    mem_dump(0x40, 20);
+    printf("\n");
+    mem_dump(0x200, 0x26);
     // test_mem();
-    test_w_write();
+    // test_w_write();
     return 0;
 }
 void b_write(Adress adr, byte b)
@@ -63,4 +69,26 @@ void w_write(Adress adr, word w)
 {
     mem[adr] = (byte)w;
     mem[adr + 1] = (byte)(w >> 8);
+}
+void load_data()
+{
+    Adress a;
+    byte n;
+    byte b;
+    while (scanf("%hx %hhx", &a, &n) != EOF)
+    {
+        for (byte i = 0; i < n; i++)
+        {
+            scanf("%hhx", &b);
+            mem[a + i] = b;
+        }
+    }
+}
+void mem_dump(Adress adr, int size)
+{
+    for (int i = 0; i < size; i++)
+    {
+        printf("%06o: %06o %04x", adr + i, mem[adr + i], mem[adr + i]);
+        printf("\n");
+    }
 }
