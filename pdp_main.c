@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <assert.h>
+#include <stdlib.h>
+#include <errno.h>
 
 typedef unsigned char byte;
 typedef unsigned short int word;
@@ -8,6 +10,7 @@ typedef word Adress;
 #define MEM_SIZE (64 * 1024)
 
 byte mem[MEM_SIZE];
+void load_file(const char *filename);
 void mem_dump(Adress adr, int size);
 void load_data();
 void b_write(Adress adr, byte b);
@@ -42,8 +45,7 @@ void test_w_write()
 }
 int main()
 {
-    load_data();
-
+    load_file("tests.txt");
     mem_dump(0x40, 20);
     printf("\n");
     mem_dump(0x200, 0x26);
@@ -86,9 +88,31 @@ void load_data()
 }
 void mem_dump(Adress adr, int size)
 {
-    for (int i = 0; i < size; i++)
+    for (int i = 0; i < size; i += 2)
     {
-        printf("%06o: %06o %04x", adr + i, mem[adr + i], mem[adr + i]);
+        word w = w_read(adr + i);
+        printf("%06o: %06o %04x", adr + i, w, w);
         printf("\n");
     }
+}
+void load_file(const char *filename) // загрузка данных из файла
+{
+    FILE *fin = fopen(filename, "r");
+    if (fin == NULL)
+    {
+        perror(filename);
+        exit(errno);
+    }
+    Adress a;
+    byte n;
+    byte b;
+    while (fscanf(fin, "%hx %hhx", &a, &n) != EOF)
+    {
+        for (byte i = 0; i < n; i++)
+        {
+            fscanf(fin, "%hhx", &b);
+            mem[a + i] = b;
+        }
+    }
+    fclose(fin);
 }
