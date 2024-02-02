@@ -10,6 +10,7 @@ typedef word Adress;
 #define MEM_SIZE (64 * 1024)
 
 byte mem[MEM_SIZE];
+void print_using();
 void load_file(const char *filename);
 void mem_dump(Adress adr, int size);
 void load_data();
@@ -43,9 +44,14 @@ void test_w_write()
     w_write(a, s);
     printf("%02hhx : %02hhx\n", mem[4], mem[5]);
 }
-int main()
+int main(int argc, char *argv[])
 {
-    load_file("tests.txt");
+    if (argc == 1)
+    {
+        print_using();
+        exit(1);
+    }
+    load_file(argv[argc - 1]);
     mem_dump(0x40, 20);
     printf("\n");
     mem_dump(0x200, 0x26);
@@ -115,4 +121,8 @@ void load_file(const char *filename) // загрузка данных из фа�
         }
     }
     fclose(fin);
+}
+void print_using()
+{
+    printf("Using example ./a.out test.txt(file with data)\n");
 }
