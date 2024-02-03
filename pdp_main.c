@@ -26,6 +26,15 @@ void b_write(Adress adr, byte b);
 byte b_read(Adress adr);
 void w_write(Adress adr, word w);
 word w_read(Adress a);
+void test_negative()
+{
+    Adress a = -100;
+    byte b0 = 0x0a;
+    // пишем байт, читаем байт
+    b_write(a, b0);
+    byte b_res = b_read(a);
+    log_pdp(DEBUG, "%02hhx = %02hhx\n", b_res, b0);
+}
 void test_mem()
 {
     byte b0 = 0x0a;
@@ -47,10 +56,10 @@ void test_mem()
 }
 void test_w_write()
 {
-    Adress a = 4;
+    Adress a = -100;
     word s = 0xcb0a;
     w_write(a, s);
-    log_pdp(DEBUG, "%02hhx : %02hhx\n", mem[4], mem[5]);
+    log_pdp(DEBUG, "%02hhx : %02hhx\n", mem[a], mem[a + 1]);
 }
 int main(int argc, char *argv[])
 {
@@ -63,12 +72,13 @@ int main(int argc, char *argv[])
     {
         log_level = DEBUG;
     }
-    load_file(argv[argc - 1]);
+    /*load_file(argv[argc - 1]);
     mem_dump(0x40, 20);
     printf("\n");
-    mem_dump(0x200, 0x26);
-    // test_mem();
-    // test_w_write();
+    mem_dump(0x200, 0x26);*/
+    // test_negative();
+    //  test_mem();
+    test_w_write();
     return 0;
 }
 void b_write(Adress adr, byte b)
@@ -81,12 +91,22 @@ byte b_read(Adress adr)
 }
 word w_read(Adress a)
 {
+    if (a % 2 == 1)
+    {
+        log_pdp(ERROR, "%s\n", "adress can't be odded");
+        exit(1);
+    }
     word w = ((word)mem[a + 1]) << 8;
     w = w | mem[a] & 0xFF;
     return w;
 }
 void w_write(Adress adr, word w)
 {
+    if (adr % 2 == 1)
+    {
+        log_pdp(ERROR, "%s\n", "adress can't be odded");
+        exit(1);
+    }
     mem[adr] = (byte)w;
     mem[adr + 1] = (byte)(w >> 8);
 }
