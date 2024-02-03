@@ -2,15 +2,23 @@
 #include <assert.h>
 #include <stdlib.h>
 #include <errno.h>
+#include <stdarg.h>
+#include <string.h>
 
 typedef unsigned char byte;
 typedef unsigned short int word;
 typedef word Adress;
 
 #define MEM_SIZE (64 * 1024)
+#define ERROR 0
+#define INFO 1
+#define TRACE 2
+#define DEBUG 3
 
+int log_level = ERROR;
 byte mem[MEM_SIZE];
-void print_using();
+int set_log_level(int level);
+void log_pdp(int level, const char *format, ...);
 void load_file(const char *filename);
 void mem_dump(Adress adr, int size);
 void load_data();
@@ -24,7 +32,7 @@ void test_mem()
     // пишем байт, читаем байт
     b_write(2, b0);
     byte b_res = b_read(2);
-    printf("%02hhx = %02hhx\n", b_res, b0);
+    log_pdp(DEBUG, "%02hhx = %02hhx\n", b_res, b0);
     assert(b_res == b0);
 
     Adress a = 4;
@@ -34,7 +42,7 @@ void test_mem()
     b_write(a, b0);
     b_write(a + 1, b1);
     word w_res = w_read(a);
-    printf("ww/br \t %04hx= %02hhx%02hhx\n", w_res, b1, b0);
+    log_pdp(DEBUG, "ww/br \t %04hx= %02hhx%02hhx\n", w_res, b1, b0);
     assert(w == w_res);
 }
 void test_w_write()
@@ -42,14 +50,18 @@ void test_w_write()
     Adress a = 4;
     word s = 0xcb0a;
     w_write(a, s);
-    printf("%02hhx : %02hhx\n", mem[4], mem[5]);
+    log_pdp(DEBUG, "%02hhx : %02hhx\n", mem[4], mem[5]);
 }
 int main(int argc, char *argv[])
 {
     if (argc == 1)
     {
-        print_using();
+        log_pdp(ERROR, "%s\n", "Using example ./a.out test.txt(file with data)");
         exit(1);
+    }
+    if (!strcmp("-d", argv[1]))
+    {
+        log_level = DEBUG;
     }
     load_file(argv[argc - 1]);
     mem_dump(0x40, 20);
@@ -97,8 +109,7 @@ void mem_dump(Adress adr, int size)
     for (int i = 0; i < size; i += 2)
     {
         word w = w_read(adr + i);
-        printf("%06o: %06o %04x", adr + i, w, w);
-        printf("\n");
+        log_pdp(DEBUG, "%06o: %06o %04x\n", adr + i, w, w);
     }
 }
 void load_file(const char *filename) // загрузка данных из файла
@@ -122,7 +133,20 @@ void load_file(const char *filename) // загрузка данных из фа�
     }
     fclose(fin);
 }
-void print_using()
+void log_pdp(int level, const char *format, ...)
 {
-    printf("Using example ./a.out test.txt(file with data)\n");
+    if (log_level < level)
+    {
+        return;
+    }
+    va_list ap;
+    va_start(ap, format);
+    vprintf(format, ap);
+    va_end(ap);
+}
+int set_log_level(int level)
+{
+    int res = log_level;
+    log_level = level;
+    return res;
 }
