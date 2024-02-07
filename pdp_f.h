@@ -16,6 +16,14 @@ extern word reg[REG_SIZE];
 #define INFO 1
 #define TRACE 2
 #define DEBUG 3
+typedef struct
+{
+    word val; // значение аргумента
+    word adr; // адресс аргумента
+
+} Arg;
+extern Arg ss;
+extern Arg dd;
 extern int log_level;
 int set_log_level(int level);
 void log_pdp(int level, const char *format, ...);
@@ -27,3 +35,9 @@ byte b_read(Adress adr);
 void w_write(Adress adr, word w);
 word w_read(Adress a);
 void run();
+Arg get_mr(word w);
+void test_mov_command();
+void cmd_parse(word w);
+void test_moda1_command();
+void test_moda1_command_reverse();
+void test_moda1_command_reverse1();

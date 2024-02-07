@@ -13,6 +13,10 @@ byte b_read(Adress adr)
 }
 word w_read(Adress a)
 {
+    if (a < 8)
+    {
+        return reg[a];
+    }
     if (a % 2 == 1)
     {
         log_pdp(ERROR, "%s\n", "adress can't be odded");
@@ -24,6 +28,11 @@ word w_read(Adress a)
 }
 void w_write(Adress adr, word w)
 {
+    if (adr < 8)
+    {
+        reg[adr] = w;
+        return;
+    }
     if (adr % 2 == 1)
     {
         log_pdp(ERROR, "%s\n", "adress can't be odded");
