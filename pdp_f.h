@@ -47,3 +47,4 @@ void cmd_parse(word w);
 void test_moda1_command();
 void test_moda1_command_reverse();
 void test_moda1_command_reverse1();
+void test_moda4_command();

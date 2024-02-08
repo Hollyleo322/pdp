@@ -127,7 +127,11 @@ void cmd_parse(word w)
     {
         if ((w & cmd[i].mask) == cmd[i].opcode)
         {
-
+            if (cmd[i].params == 3)
+            {
+                ss = get_mr(w >> 6);
+                dd = get_mr(w);
+            }
             ptr = cmd[i].do_func;
             ptr();
             break;
