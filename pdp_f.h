@@ -16,6 +16,12 @@ extern word reg[REG_SIZE];
 #define INFO 1
 #define TRACE 2
 #define DEBUG 3
+#define NO_PARAMS 0
+#define HAS_DD 1
+#define HAS_SS 2
+#define HAS_N 4
+#define HAS_R 8
+#define HAS_XX 16
 typedef struct
 {
     word val; // значение аргумента
