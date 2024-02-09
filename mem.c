@@ -5,10 +5,19 @@ word reg[REG_SIZE];
 
 void b_write(Adress adr, byte b)
 {
+    if (adr < 8)
+    {
+        reg[adr] = b;
+        return;
+    }
     mem[adr] = b;
 }
 byte b_read(Adress adr)
 {
+    if (adr < 8)
+    {
+        return reg[adr];
+    }
     return mem[adr];
 }
 word w_read(Adress a)

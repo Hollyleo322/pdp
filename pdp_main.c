@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
     {
         log_level = TRACE;
     }
-    // load_file(argv[argc - 1]);
+    load_file(argv[argc - 1]);
     /*mem_dump(0x40, 20);
     printf("\n");
     mem_dump(0x200, 0x26);*/
@@ -26,10 +26,10 @@ int main(int argc, char *argv[])
     //  test_mem();
     // test_w_write();
     // log_pdp(TRACE, "%o %o: %s\n");
-    // run();
+    run();
     // test_mov_command();
     // test_moda1_command();
     // test_moda1_command_reverse1();
-    test_moda4_command();
+    //test_moda4_command();
     return 0;
 }
