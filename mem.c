@@ -7,10 +7,15 @@ void b_write(Adress adr, byte b)
 {
     if (adr < 8)
     {
-        reg[adr] = b;
+        if (!(b >> 7))
+        {
+            reg[adr] = b & 0xFF;
+            return;
+        }
+        reg[adr] = (0xFF << 8) | b;
         return;
     }
-    mem[adr] = b;
+    mem[adr] = b & 0xFF;
 }
 byte b_read(Adress adr)
 {
@@ -32,7 +37,7 @@ word w_read(Adress a)
         exit(1);
     }
     word w = ((word)mem[a + 1]) << 8;
-    w = w | mem[a];
+    w = w | (mem[a] & 0xFF);
     return w;
 }
 void w_write(Adress adr, word w)
@@ -75,6 +80,7 @@ void load_file(const char *filename) // загрузка данных из фа�
         for (byte i = 0; i < n; i++)
         {
             fscanf(fin, "%hhx", &b);
+            printf("b[%hhx] = %o\n", i, b);
             mem[a + i] = b;
         }
     }
