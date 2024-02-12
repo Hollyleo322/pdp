@@ -235,6 +235,30 @@ void do_beq()
         do_br();
     }
 }
+void do_testb()
+{
+    byte res = b_read(dd.adr);
+    clear_flag_v();
+    clear_flag_c();
+    if (res == 0)
+    {
+        set_flag_z();
+    }
+    else
+        clear_flag_z();
+    if ((res & 0200) == 0200)
+    {
+        set_flag_n();
+    }
+    else
+        clear_flag_n();
+}
+void do_bpl()
+{
+    log_pdp(TRACE, "%s %06o\n", "bpl", pc + XX * 2);
+    if (flag_Z == 0)
+        do_br();
+}
 Command cmd[] = {
     {0170000, 0060000, "add", do_add, HAS_SS | HAS_DD},
     {0170000, 0010000, "mov", do_mov, HAS_SS | HAS_DD},
@@ -244,6 +268,8 @@ Command cmd[] = {
     {0177700, 0005000, "clear", do_clear, HAS_DD},
     {0177700, 0001400, "beq", do_beq, HAS_XX},
     {0177000, 0000000, "br", do_br, HAS_XX},
+    {0177700, 0105700, "testb", do_testb, HAS_DD},
+    {0177700, 0100000, "bpl", do_bpl, HAS_XX},
     {0, 0, "unknown", do_nothing, NO_PARAMS}};
 void run()
 {
@@ -253,6 +279,12 @@ void run()
 
     while (1)
     {
+        unsigned char output = b_read(odata);
+        if (output <= 127)
+        {
+            printf("%c", output);
+            b_write(odata, 130);
+        }
         word w = w_read(pc);
         log_pdp(TRACE, "%06o %06o: ", pc, w);
         pc += 2;
