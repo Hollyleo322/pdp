@@ -72,6 +72,8 @@ void load_file(const char *filename) // загрузка данных из фа�
         perror(filename);
         exit(errno);
     }
+    mem[ostat] = 255;
+    mem[odata] = 130;
     Adress a;
     byte n;
     byte b;
