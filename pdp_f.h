@@ -22,6 +22,8 @@ extern word reg[REG_SIZE];
 #define HAS_N 4
 #define HAS_R 8
 #define HAS_XX 16
+#define ostat 0177564
+#define odata 0177566
 extern int byte_status;
 typedef struct
 {
