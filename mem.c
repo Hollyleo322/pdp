@@ -80,7 +80,6 @@ void load_file(const char *filename) // загрузка данных из фа�
         for (byte i = 0; i < n; i++)
         {
             fscanf(fin, "%hhx", &b);
-            printf("b[%hhx] = %o\n", i, b);
             mem[a + i] = b;
         }
     }
