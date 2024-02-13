@@ -8,11 +8,13 @@ typedef struct
     char params;
 } Command;
 char XX = 0;
+int registr = 0;
 int byte_status = 0;
 int flag_V = 0; // overflow знакое переполнение
 int flag_Z = 0; // zero
 int flag_N = 0; // negative
 int flag_C = 0; // carry , переполнение
+word check_byte = 0100000;
 Arg get_mr(word w)
 {
     Arg res;
@@ -41,8 +43,11 @@ Arg get_mr(word w)
         {
             res.adr = reg[r];
             res.val = b_read(res.adr); // todo b_read
-            reg[r] += 1;               // todo += 1
+            reg[r] += 1;
+            byte_status = 0; // todo += 1
         }
+        if (r == 6 && byte_status == 1)
+            reg[r] += 1;
         if (r == 7)
             log_pdp(TRACE, "#%o ", res.val);
         else
@@ -70,7 +75,10 @@ Arg get_mr(word w)
             reg[r] -= 1;
             res.adr = reg[r];
             res.val = b_read(res.adr);
+            byte_status = 0;
         }
+        if (r == 6 && byte_status == 1)
+            reg[r] += 1;
         log_pdp(TRACE, "-(R%d) ", r);
         break;
     case 5:
@@ -80,6 +88,27 @@ Arg get_mr(word w)
         res.val = w_read(res.adr);
         log_pdp(TRACE, "@-(R%d) ", r);
         break;
+    case 6:
+        word x = w_read(pc);
+        pc += 2;
+        res.adr = reg[r];
+        res.adr = res.adr + x;
+        res.val = w_read(res.adr);
+        if (r == 7)
+            log_pdp(TRACE, "%o ", res.val);
+        else
+            log_pdp(TRACE, "X(R%d) ", r);
+    case 7:
+        word tmp = w_read(pc);
+        pc += 2;
+        res.adr = reg[r];
+        res.adr = res.adr + tmp;
+        res.adr = w_read(res.adr);
+        res.val = w_read(res.adr);
+        if (r == 7)
+            log_pdp(TRACE, " @%o ", res.val);
+        else
+            log_pdp(TRACE, "@XR(%d) ", r);
     default:
         log_pdp(ERROR, "Mode %d not implemented yet!\n", m);
         exit(1);
@@ -237,7 +266,7 @@ void do_beq()
 }
 void do_testb()
 {
-    byte res = b_read(dd.adr);
+    byte res = dd.val;
     clear_flag_v();
     clear_flag_c();
     if (res == 0)
@@ -252,12 +281,26 @@ void do_testb()
     }
     else
         clear_flag_n();
+    log_pdp(TRACE, "%s\n", "testb");
 }
 void do_bpl()
 {
     log_pdp(TRACE, "%s %06o\n", "bpl", pc + XX * 2);
     if (flag_Z == 0)
         do_br();
+}
+void do_jsr()
+{
+    sp -= 2;
+    w_write(sp, reg[registr]);
+    reg[registr] = pc;
+    pc = dd.adr;
+}
+void do_rts()
+{
+    pc = reg[registr];
+    reg[registr] = w_read(sp);
+    sp += 2;
 }
 Command cmd[] = {
     {0170000, 0060000, "add", do_add, HAS_SS | HAS_DD},
@@ -269,11 +312,12 @@ Command cmd[] = {
     {0177700, 0001400, "beq", do_beq, HAS_XX},
     {0177000, 0000000, "br", do_br, HAS_XX},
     {0177700, 0105700, "testb", do_testb, HAS_DD},
-    {0177700, 0100000, "bpl", do_bpl, HAS_XX},
+    {0177000, 0100000, "bpl", do_bpl, HAS_XX},
+    {0177000, 0004000, "jsr", do_jsr, HAS_R | HAS_DD},
+    {0177770, 0000200, "rts", do_rts, HAS_R},
     {0, 0, "unknown", do_nothing, NO_PARAMS}};
 void run()
 {
-    word check_byte = 0100000;
     void (*ptr)(void);
     pc = 01000;
 
@@ -312,6 +356,13 @@ void run()
                 {
                     XX = (w & 0000777) - 0000400;
                 }
+                if (cmd[i].params == (HAS_R | HAS_DD))
+                {
+                    dd = get_mr(w);
+                    registr = (w >> 6) & 7;
+                }
+                if (cmd[i].params == HAS_R)
+                    registr = (w & 7);
                 ptr = cmd[i].do_func;
                 ptr();
                 break;
