@@ -5,11 +5,13 @@
 #include <errno.h>
 #include <stdarg.h>
 #include <string.h>
+#include <unistd.h>
 typedef unsigned char byte;
 typedef unsigned short int word;
 typedef word Adress;
 #define REG_SIZE 8
 extern word reg[REG_SIZE];
+#define sp reg[6]
 #define pc reg[7]
 #define MEM_SIZE (64 * 1024)
 #define ERROR 0
@@ -27,12 +29,22 @@ extern word reg[REG_SIZE];
 extern int byte_status;
 typedef struct
 {
+    word mask;
+    word opcode;
+    char *name;
+    void (*do_func)(void);
+    char params;
+} Command;
+typedef struct
+{
     word val; // значение аргумента
     word adr; // адресс аргумента
 
 } Arg;
 extern Arg ss;
 extern Arg dd;
+extern char XX;
+extern int registr;
 extern int log_level;
 int set_log_level(int level);
 void log_pdp(int level, const char *format, ...);
@@ -59,3 +71,16 @@ void set_flag_z();
 void set_flag_c();
 void set_flag_v();
 void set_flag_n();
+void do_halt();
+void do_mov();
+void do_add();
+void do_nothing();
+void do_sob();
+void do_movb();
+void do_clear();
+void do_br();
+void do_beq();
+void do_testb();
+void do_bpl();
+void do_jsr();
+void do_rts();
