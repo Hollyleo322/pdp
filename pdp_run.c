@@ -118,7 +118,7 @@ Command cmd[] = {
     {0177000, 0100000, "bpl", do_bpl, HAS_XX},
     {0177000, 0004000, "jsr", do_jsr, HAS_R | HAS_DD},
     {0177770, 0000200, "rts", do_rts, HAS_R},
-    {0177000, 0000000, "br", do_br, HAS_XX},
+    {0177400, 0000400, "br", do_br, HAS_XX},
     {0, 0, "unknown", do_nothing, NO_PARAMS}};
 void run()
 {
