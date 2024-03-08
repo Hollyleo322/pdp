@@ -4,7 +4,8 @@
 
 double **memory_aloc(int row, int col);
 int input_array(double **matrix, int row, int col);
-double deter(double **matrix, int row, double **t);
+double deter(double **matrix, int row);
+void clear_arr(double **matrix, int row);
 
 int main()
 {
@@ -16,9 +17,7 @@ int main()
         int check_array = input_array(array, row, col);
         if (check_array == (row * col) && array != NULL)
         {
-            double **t = memory_aloc(row, row);
-            printf("%.6lf", deter(array, row, t));
-            free(t);
+            printf("%.6lf", deter(array, row));
         }
         else
             printf("n/a");
@@ -51,8 +50,12 @@ int input_array(double **matrix, int row, int col)
     }
     return res;
 }
-double deter(double **matrix, int row, double **t)
+double deter(double **matrix, int row)
 {
+    if (row == 1)
+    {
+        return matrix[0][0];
+    }
     if (row == 2)
     {
         return matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0];
@@ -64,6 +67,11 @@ double deter(double **matrix, int row, double **t)
 
         for (int j = 0; j < row; j++)
         {
+            double **t = malloc(sizeof(double *) * (row - 1));
+            for (int i = 0; i < row - 1; i++)
+            {
+                t[i] = malloc(sizeof(double) * (row - 1));
+            }
             a = 0;
             for (int k = 1; k < row; k++)
             {
@@ -75,11 +83,21 @@ double deter(double **matrix, int row, double **t)
                         t[a][b] = matrix[k][s];
                         b++;
                     }
-                    a++;
                 }
+                a++;
             }
             res += pow(-1, (double)j + 2) * matrix[0][j] * deter(t, row - 1);
+            clear_arr(t, row - 1);
         }
         return res;
     }
+}
+
+void clear_arr(double **matrix, int row)
+{
+    for (int i = 0; i < row; i++)
+    {
+        free(matrix[i]);
+    }
+    free(matrix);
 }
