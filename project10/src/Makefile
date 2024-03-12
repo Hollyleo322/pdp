@@ -1,0 +1,14 @@
+CFLAGS=-Wall -Wextra -Werror 
+strlen_tests:
+	gcc $(CFLAGS) -o Quest_1 s21_string.c s21_string_test.c strlenmain.c
+	mv Quest_1 ../build
+	rm -rf *.o
+strcmp_tests:
+	gcc $(CFLAGS) -o Quest_2 s21_string.c s21_string_test.c strcmpmain.c
+	mv Quest_2 ../build
+	rm -rf *.o
+strcpy_tests:
+	gcc $(CFLAGS) -o Quest_3 s21_string.c s21_string_test.c strcpymain.c
+	mv Quest_3 ../build
+	rm -rf *.o
+
