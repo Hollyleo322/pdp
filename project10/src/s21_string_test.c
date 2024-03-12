@@ -79,3 +79,51 @@ void s21_strcat_test()
     printf("%s\n", res_3);
     printf("%s\n", s21_strcmp(res_3, "asdfghqwertyuiopasd") == 0 ? "SUCCESS" : "FAIL");
 }
+void s21_strchr_test()
+{
+    char *test_1_first = "abc";
+    char test_1_second = 'a';
+    char *test_2_first = "qwe";
+    char test_2_second = 'c';
+    char *test_3_first = "hello";
+    char test_3_second = 'h';
+    char *res_1 = s21_strchr(test_1_first, test_1_second);
+    char *res_2 = s21_strchr(test_2_first, test_2_second);
+    char *res_3 = s21_strchr(test_3_first, test_3_second);
+    printf("%s %c\n", test_1_first, test_1_second);
+    if (res_1)
+        printf("%c\n", *res_1);
+    printf("%s\n", res_1 ? "SUCCESS" : "FAIL");
+    printf("%s %c\n", test_2_first, test_2_second);
+    if (res_2)
+        printf("%c\n", *res_2);
+    printf("%s\n", res_2 ? "SUCCESS" : "FAIL");
+    printf("%s %c\n", test_3_first, test_3_second);
+    if (res_3)
+        printf("%c\n", *res_3);
+    printf("%s\n", res_3 ? "SUCCESS" : "FAIL");
+}
+void s21_strstr_test()
+{
+    char *test_1_first = "abcdefghq";
+    char *test_1_second = "defg";
+    char *test_2_first = "korzina";
+    char *test_2_second = "dsa";
+    char *test_3_first = "hello";
+    char *test_3_second = "hello";
+    char *res_1 = s21_strstr(test_1_first, test_1_second);
+    char *res_2 = s21_strstr(test_2_first, test_2_second);
+    char *res_3 = s21_strstr(test_3_first, test_3_second);
+    printf("%s %s\n", test_1_first, test_1_second);
+    if (res_1)
+        printf("%s\n", res_1);
+    printf("%s\n", res_1 ? "SUCCESS" : "FAIL");
+    printf("%s %s\n", test_2_first, test_2_second);
+    if (res_2)
+        printf("%s\n", res_2);
+    printf("%s\n", res_2 ? "SUCCESS" : "FAIL");
+    printf("%s %s\n", test_3_first, test_3_second);
+    if (res_3)
+        printf("%s\n", res_3);
+    printf("%s\n", res_3 ? "SUCCESS" : "FAIL");
+}

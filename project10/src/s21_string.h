@@ -10,3 +10,7 @@ int s21_strcmp(char *a, char *b);
 char *s21_strcpy(char *dst, const char *src);
 char *s21_strcat(char *dst, char *src);
 void s21_strcat_test();
+char *s21_strchr(char *src, int c);
+void s21_strchr_test();
+char *s21_strstr(char *str, char *substr);
+void s21_strstr_test();

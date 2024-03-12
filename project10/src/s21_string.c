@@ -53,3 +53,33 @@ char *s21_strcat(char *dst, char *src)
     dst[len_2] = '\0';
     return dst;
 }
+char *s21_strchr(char *src, int c)
+{
+    int count = 0;
+    while (src[count] && src[count] != c)
+    {
+        count += 1;
+    }
+    return src[count] == c ? src + count : NULL;
+}
+char *s21_strstr(char *str, char *substr)
+{
+    int len_2 = s21_strlen(substr);
+    int j = 0;
+    char *res = NULL;
+    if (s21_strlen(str) > 1 && s21_strlen(substr) > 1)
+    {
+        for (int i = 0; i < s21_strlen(str); i++)
+        {
+            if (str[i] == substr[j])
+            {
+                j++;
+                if (j == len_2)
+                {
+                    res = (str + i - j + 1);
+                }
+            }
+        }
+    }
+    return res;
+}
