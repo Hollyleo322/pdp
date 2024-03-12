@@ -58,3 +58,24 @@ void s21_strcpy_test()
     printf("%s\n", s21_strcpy(test_3_first, test_3_second));
     printf("%s\n", s21_strcmp(test_3_first, test_3_second) == 0 ? "SUCCESS" : "FAIL");
 }
+void s21_strcat_test()
+{
+    char test_1_first[N] = "ABC";
+    char *test_1_second = "abc";
+    char test_2_first[N] = "oue";
+    char *test_2_second = "qwe";
+    char test_3_first[N] = "asdfgh";
+    char *test_3_second = "qwertyuiopasd";
+    char *res_1 = s21_strcat(test_1_first, test_1_second);
+    char *res_2 = s21_strcat(test_2_first, test_2_second);
+    char *res_3 = s21_strcat(test_3_first, test_3_second);
+    printf("%s %s\n", test_1_first, test_1_second);
+    printf("%s\n", res_1);
+    printf("%s\n", s21_strcmp(res_1, "ABCabc") == 0 ? "SUCCESS" : "FAIL");
+    printf("%s %s\n", test_2_first, test_2_second);
+    printf("%s\n", res_2);
+    printf("%s\n", s21_strcmp(res_2, "Bratishka") == 0 ? "SUCCESS" : "FAIL");
+    printf("%s %s\n", test_3_first, test_3_second);
+    printf("%s\n", res_3);
+    printf("%s\n", s21_strcmp(res_3, "asdfghqwertyuiopasd") == 0 ? "SUCCESS" : "FAIL");
+}

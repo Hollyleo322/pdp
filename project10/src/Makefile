@@ -11,4 +11,8 @@ strcpy_tests:
 	gcc $(CFLAGS) -o Quest_3 s21_string.c s21_string_test.c strcpymain.c
 	mv Quest_3 ../build
 	rm -rf *.o
+strcat_tests:
+	gcc $(CFLAGS) -o Quest_4 s21_string.c s21_string_test.c strcatmain.c
+	mv Quest_4 ../build
+	rm -rf *.o
 

@@ -42,3 +42,14 @@ char *s21_strcpy(char *dst, const char *src)
     *(dst++) = '\0';
     return res;
 }
+char *s21_strcat(char *dst, char *src)
+{
+    int len_1 = s21_strlen(dst);
+    int len_2 = len_1 + s21_strlen(src);
+    for (int i = 0; src[i] != '\0'; i++)
+    {
+        dst[len_1 + i] = src[i];
+    }
+    dst[len_2] = '\0';
+    return dst;
+}
