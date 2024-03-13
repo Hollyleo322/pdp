@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-struct node *init(struct door *door)
+struct node *init(const struct door *door)
 {
     struct node *res = malloc(sizeof(struct node));
     res->doors = *door;
@@ -45,13 +45,5 @@ void destroy(struct node *root)
         p = d->next;
         free(d);
         d = p;
-    }
-    root = NULL;
-}
-void print_list(struct node *root)
-{
-    for (struct node *p = root; p != NULL; p = p->next)
-    {
-        printf("%lld %d ", p->doors.id, p->doors.status);
     }
 }

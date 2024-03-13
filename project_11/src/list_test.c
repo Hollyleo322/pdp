@@ -17,7 +17,7 @@ int main()
     struct node *root = init(&first);
     struct node *check_remove_1 = root;
     root = add_door(root, &second);
-    struct node *check_remove_2 = root;
+    struct node *check_remove_2 = find_door(2, root);
     printf("%s\n", root->doors.id == 2 ? "SUCCESS" : "FAIL");
     root = add_door(root, &third);
     printf("%s\n", root->doors.id == 1 ? "SUCCESS" : "FAIL");
