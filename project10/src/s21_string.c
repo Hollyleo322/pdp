@@ -83,3 +83,6 @@ char *s21_strstr(char *str, char *substr)
     }
     return res;
 }
+char * s21_strtok(char * str, char * substr) {
+    
+}
