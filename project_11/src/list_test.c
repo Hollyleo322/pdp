@@ -1,9 +1,10 @@
 #include "list.h"
-#include "door_struct.h"
+
 #include <stdio.h>
 
-int main()
-{
+#include "door_struct.h"
+
+int main() {
     int count = 0;
     struct door first;
     struct door second;
@@ -22,15 +23,13 @@ int main()
     root = add_door(root, &third);
     printf("%s\n", root->doors.id == 1 ? "SUCCESS" : "FAIL");
     root = remove_door(check_remove_2, root);
-    for (struct node *p = root; p != NULL; p = p->next)
-    {
+    for (struct node *p = root; p != NULL; p = p->next) {
         count += 1;
     }
     printf("%s\n", count == 2 ? "SUCCESS" : "FAIL");
     count = 0;
     root = remove_door(check_remove_1, root);
-    for (struct node *p = root; p != NULL; p = p->next)
-    {
+    for (struct node *p = root; p != NULL; p = p->next) {
         count += 1;
     }
     printf("%s\n", count == 2 ? "SUCCESS" : "FAIL");

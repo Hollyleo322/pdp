@@ -6,3 +6,6 @@ door_struct:
 list_test:
 	$(CFLAGS) Quest_2 list.c list_test.c
 	mv Quest_2 ../build
+stack_test:
+	$(CFLAGS) Quest_3 stack.c stack_test.c
+	mv Quest_3 ../build

@@ -1,7 +1,6 @@
 #pragma once
 
-struct door
-{
+struct door {
     long long int id;
     char status;
 };

@@ -1,8 +1,7 @@
 #pragma once
 #include "door_struct.h"
 
-struct node
-{
+struct node {
     struct door doors;
     struct node *next;
 };
